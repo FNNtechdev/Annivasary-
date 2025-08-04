@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>39 Years of Forever – Mr. & Mrs. Njoroge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      font-family: 'Open Sans', sans-serif;
+      background: #fffaf5;
+      color: #333;
+      height: 100%;
+      overflow: hidden;
+    }
+    #intro {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background: linear-gradient(to bottom, #fcd5ce, #ffe5ec);
+      text-align: center;
+      position: relative;
+    }
+    #intro h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #b56576;
+      margin-bottom: 20px;
+    }
+    #yearCounter {
+      font-size: 4rem;
+      background: #ffffffcc;
+      padding: 20px 40px;
+      border-radius: 15px;
+      color: #6a4c93;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      animation: sparkle 2s infinite ease-in-out;
+      opacity: 0.7;
+    }
+    @keyframes sparkle {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-30px) scale(1.5); opacity: 0; }
+    }
+    #mainContent {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: #fff0f5;
+      padding-bottom: 100px;
+    }
+    .card-container {
+      width: 90%;
+      max-width: 600px;
+      height: 400px;
+      position: relative;
+    }
+    .card {
+      width: 100%;
+      height: 100%;
+      perspective: 1000px;
+    }
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 1s;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+    .flip .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .card-front {
+      background: #ffe5ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.3rem;
+      line-height: 1.6;
+    }
+    .card-front h2 {
+      font-family: 'Great Vibes', cursive;
+      color: #b56576;
+      margin-bottom: 15px;
+    }
+    .card-back {
+      background: #fff;
+      transform: rotateY(180deg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .card-back video, .video-section video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+    #finalMessage, #outroTitle {
+      display: none;
+      font-size: 1.5rem;
+      color: #b56576;
+      background: #fff8f0cc;
+      padding: 20px;
+      font-family: 'Great Vibes', cursive;
+      text-align: center;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+    #outroTitle {
+      font-size: 2rem;
+      animation: fadeIn 2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div id="intro">
+    <h1>Mr. & Mrs. Njoroge</h1>
+    <div id="yearCounter">Tap to Begin</div>
+  </div>
+
+  <div id="mainContent">
+    <div class="card-container" id="displayArea">
+      <div class="card" id="flipCard">
+        <div class="card-inner">
+          <div class="card-front">
+            <div>
+              <h2>Forever Looks Good On You</h2>
+              <p>
+                For 39 years, you’ve built a love that speaks in kindness, grows with grace,
+                and shines brighter every passing day. Thank you for being the heartbeat of our home.
+              </p>
+            </div>
+          </div>
+          <div class="card-back">
+            <video src="slideshow.mp4" autoplay muted playsinline loop></video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="finalMessage">With all our love – Your Children 💖</div>
+    <div id="outroTitle">Happy 39th Anniversary, Mum & Dad 🎊</div>
+  </div>
+
+  <audio id="bgMusic">
+    <source src="faith.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const counterEl = document.getElementById("yearCounter");
+    const introEl = document.getElementById("intro");
+    const mainContent = document.getElementById("mainContent");
+    const flipCard = document.getElementById("flipCard");
+    const displayArea = document.getElementById("displayArea");
+    const finalMessage = document.getElementById("finalMessage");
+    const outroTitle = document.getElementById("outroTitle");
+    const bgMusic = document.getElementById("bgMusic");
+
+    let currentYear = 1;
+    const finalYear = 39;
+    const videos = [
+      { src: "wedding.mp4", muted: true },
+      { src: "family.mp4", muted: false }
+    ];
+
+    function addSparkles(container) {
+      for (let i = 0; i < 40; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("sparkle");
+        sparkle.style.left = Math.random() * 100 + "%";
+        sparkle.style.top = Math.random() * 100 + "%";
+        sparkle.style.animationDuration = (1 + Math.random() * 2) + "s";
+        container.appendChild(sparkle);
+      }
+    }
+
+    addSparkles(introEl);
+    addSparkles(mainContent);
+
+    counterEl.addEventListener("click", () => {
+      bgMusic.play();
+
+      const suspenseInterval = setInterval(() => {
+        counterEl.innerHTML = `Year ${currentYear}`;
+        currentYear++;
+
+        if (currentYear > finalYear) {
+          clearInterval(suspenseInterval);
+          counterEl.innerHTML = `🎉 Celebrating 39 Years of Love 🎉`;
+
+          setTimeout(() => {
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+
+            introEl.style.display = "none";
+            mainContent.style.display = "flex";
+            document.body.style.overflow = "auto";
+
+            setTimeout(() => {
+              flipCard.classList.add("flip");
+            }, 3000);
+
+            setTimeout(() => {
+              displayVideo(0);
+            }, 8000);
+
+          }, 1500);
+        }
+      }, 100);
+    });
+
+    function displayVideo(index) {
+      if (index >= videos.length) {
+        displayArea.innerHTML = "";
+        finalMessage.style.display = 'block';
+        outroTitle.style.display = 'block';
+        return;
+      }
+
+      const video = document.createElement("video");
+      video.src = videos[index].src;
+      video.autoplay = true;
+      video.controls = true;
+      video.playsInline = true;
+      video.muted = videos[index].muted;
+      video.style.width = "100%";
+      video.style.height = "100%";
+      video.style.borderRadius = "15px";
+      video.style.objectFit = "cover";
+
+      displayArea.innerHTML = "";
+      displayArea.appendChild(video);
+
+      video.addEventListener("ended", () => {
+        displayVideo(index + 1);
+      });
+    }
+  </script>
+</body>
+</html>
