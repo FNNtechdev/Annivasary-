@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>39 Years of Forever – Mr. & Mrs. Njoroge</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet">
   <style>
@@ -133,13 +133,17 @@
       border-radius: 10px;
       max-width: 600px;
       margin-top: 20px;
+      animation: fadeIn 1.5s ease;
     }
     #outroTitle {
       font-size: 2rem;
-      animation: fadeIn 2s ease-in-out;
+    }
+    .fade-in-image {
+      opacity: 0;
+      animation: fadeIn 2.5s ease forwards;
     }
     @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.9); }
+      0% { opacity: 0; transform: scale(0.95); }
       100% { opacity: 1; transform: scale(1); }
     }
   </style>
@@ -173,7 +177,7 @@
     <div id="outroTitle">Happy 39th Anniversary, Mum & Dad 🎊</div>
   </div>
 
-  <audio id="bgMusic">
+  <audio id="bgMusic" loop>
     <source src="faith.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
@@ -221,12 +225,13 @@
           counterEl.innerHTML = `🎉 Celebrating 39 Years of Love 🎉`;
 
           setTimeout(() => {
-            bgMusic.pause();
-            bgMusic.currentTime = 0;
-
             introEl.style.display = "none";
             mainContent.style.display = "flex";
             document.body.style.overflow = "auto";
+
+            // ⛔ Stop music before the flip
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
 
             setTimeout(() => {
               flipCard.classList.add("flip");
@@ -234,8 +239,7 @@
 
             setTimeout(() => {
               displayVideo(0);
-            }, 8000);
-
+            }, 3000);
           }, 1500);
         }
       }, 100);
@@ -243,7 +247,18 @@
 
     function displayVideo(index) {
       if (index >= videos.length) {
+        // Show floral image instead of third video
         displayArea.innerHTML = "";
+
+        const image = document.createElement("img");
+        image.src = "floral.jpg"; // <- Change to your floral image file
+        image.alt = "Floral celebration";
+        image.classList.add("fade-in-image");
+        image.style.width = "100%";
+        image.style.borderRadius = "15px";
+
+        displayArea.appendChild(image);
+
         finalMessage.style.display = 'block';
         outroTitle.style.display = 'block';
         return;
@@ -263,10 +278,16 @@
       displayArea.innerHTML = "";
       displayArea.appendChild(video);
 
+      finalMessage.style.display = 'block';
+      outroTitle.style.display = 'block';
+
       video.addEventListener("ended", () => {
+        finalMessage.style.display = 'none';
+        outroTitle.style.display = 'none';
         displayVideo(index + 1);
       });
     }
   </script>
 </body>
 </html>
+
